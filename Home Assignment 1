@@ -1,0 +1,41 @@
+---
+title: "Home Assignment_1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Importing
+```{r}
+library(tidyverse)
+library(lubridate)
+
+carsDF <- read.csv('Cars.csv')
+carsDF
+```
+## Appearances
+```{r}
+tab_cars <- table(carsDF$name)
+head(tab_cars[order(tab_cars, decreasing = TRUE)],5)
+```
+## WeekDay
+```{r}
+
+carsDF$WeekDay_lastseen <- as.Date(carsDF$lastSeen)
+carsDF$WeekDay_lastseen <- format(carsDF$WeekDay_lastseen, '%A %d %B %Y')
+carsDF
+
+table_day <- table(wday(carsDF$lastSeen, label = TRUE, abbr = FALSE))
+table_day[order(table_day, decreasing = TRUE)]
+```
+## Plots
+```{r}
+library(ggplot2)
+carsDF2 <- subset(carsDF, gearbox != "")
+carsDF2
+
+ggplot(carsDF2, aes(x = price, y = powerPS)) + geom_point() + facet_wrap(~gearbox) +ggtitle("Price/Power graph for automatic and manual cars")
+#I have not changed the X axis as I found it relevant
+```
